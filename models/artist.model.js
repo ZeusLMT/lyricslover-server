@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 let artistSchema = new Schema({
     name: {type: String, required: true, max: 25},
-    albums: {type: mongoose.Schema.Types.ObjectId, ref: 'Album'},
-    songs: [{type: mongoose.Schema.Types.ObjectId, ref: 'Song'}],
+    albums: [{type: ObjectId, ref: 'Album'}],
+    songs: [{type: ObjectId, ref: 'Song'}],
 });
 
 
