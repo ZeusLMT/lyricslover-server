@@ -8,8 +8,8 @@ exports.createSong = (req, res) => {
     }
 };
 
-exports.getAllSongs = (req, res) => {
+exports.getAll = (req, res) => {
     database.getAllSongs((results) => {
         res.json(results);
     })
-}
+};

@@ -63,6 +63,12 @@ exports.updateArtist = (artistId, newObj, callback) => {
     });
 };
 
+exports.getAllArtists = (callback) => {
+    Artists.find().populate('songs', 'title').populate('albums', 'title').then((all) => {
+        callback(all);
+    });
+};
+
 
 
 
@@ -87,5 +93,11 @@ exports.updateAlbum = (albumId, newObj, callback) => {
     Albums.findOneAndUpdate({'_id': albumId}, newObj, {new: true}, (error, result) =>{
         if (error) throw error;
         callback(result);
+    });
+};
+
+exports.getAllAlbums = (callback) => {
+    Albums.find().populate('artist', 'name').populate('tracks', 'title').then((all) => {
+        callback(all);
     });
 };

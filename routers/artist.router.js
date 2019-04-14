@@ -8,4 +8,6 @@ const controller = require('../controllers/artist.controller');
 
 router.post('/', urlencodedParser, controller.createArtist);
 
+router.get('/', controller.getAll);
+
 module.exports = router;

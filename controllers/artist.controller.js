@@ -7,3 +7,9 @@ exports.createArtist = (req, res) => {
         });
     }
 };
+
+exports.getAll = (req, res) => {
+    database.getAllArtists((results) => {
+        res.json(results);
+    })
+};
