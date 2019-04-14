@@ -9,33 +9,16 @@ class Resize {
 
     save(input, callback) {
         const filename = Resize.filename();
-        const originalPath = this.filepath(filename.original);
-        const thumbnailPath = this.filepath(filename.thumbnail);
-        const promises = [];
-
-        //Save original photo
-        promises.push(sharp(input).toFile(originalPath));
+        const thumbnailPath = `${this.filepath(filename)}.png`;
 
         //Resize to small for thumbnails
-        promises.push(
-            sharp(input).resize(500, 500, {
-                fit: sharp.fit.inside,
-                withoutEnlargement: true,
-            })
-                .toFile(thumbnailPath)
-        );
-
-        Promise.all(promises)
+        sharp(input).resize(500, 500, {
+            fit: sharp.fit.inside,
+            withoutEnlargement: true,
+        })
+            .toFile(thumbnailPath)
             .then(() => {
-                console.log('saved all photos');
-
-                const filePaths = {
-                    thumbnail: thumbnailPath,
-                    original: originalPath,
-                    filename: filename.plain
-                };
-
-                callback(filePaths);
+                callback(thumbnailPath);
             })
             .catch((error) => {
                 console.log(error);
@@ -43,9 +26,7 @@ class Resize {
     }
 
     static filename() {
-        const filename = uuidv4();
-
-        return { thumbnail: `${filename}_thumbnail.png`, original: `${filename}.png`, plain: filename };
+        return uuidv4();
     }
 
     filepath(filename) {
