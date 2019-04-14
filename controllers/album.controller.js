@@ -27,3 +27,13 @@ exports.getAll = (req, res) => {
         res.status(200).json(results);
     })
 };
+
+exports.deleteAlbum = (req, res) => {
+    if (req.params.id !== undefined) {
+        database.deleteAlbumAndReferences(req.params.id, () => {
+            res.sendStatus(200);
+        });
+    } else {
+        res.status(400).send("Error deleting album: album id error.");
+    }
+};

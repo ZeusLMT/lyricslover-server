@@ -110,7 +110,7 @@ exports.updateArtist = (artistId, newObj, callback) => {
 };
 
 exports.deleteArtist = (artistId, callback) => {
-    Artists.findByIdAndDelete(artistId, () => {
+    Artists.findOneAndDelete({_id: artistId}, () => {
         callback();
     });
 };
@@ -122,7 +122,7 @@ exports.getAllArtists = (callback) => {
 };
 
 exports.getArtistByProperties = (properties, callback) => {
-    Artists.find(properties).populate('songs', 'title').populate('albums', 'title').then((result) => {
+    Artists.findOne(properties).populate('songs', 'title').populate('albums', 'title').then((result) => {
         callback(result);
     });
 };
@@ -161,13 +161,40 @@ exports.getAllAlbums = (callback) => {
 };
 
 exports.getAlbumByProperties = (properties, callback) => {
-    Albums.find(properties).populate('artist', 'name').populate('tracks', 'title').then((result) => {
+    Albums.findOne(properties).populate('artist', 'name').populate('tracks', 'title').then((result) => {
         callback(result);
     });
 };
 
 exports.deleteAlbum = (albumId, callback) => {
-    Albums.findByIdAndDelete(albumId, () => {
+    Albums.findOneAndDelete({_id: albumId}, () => {
         callback();
+    });
+};
+
+exports.deleteAlbumAndReferences = (albumId, callback) => {
+    this.getAlbumByProperties({_id: albumId }, (result) => {
+        const artist = result.artist;
+        const tracks = result.tracks;
+        const promises = [];
+
+        //update artist with newly added song
+        promises.push(this.updateArtist(artist.id, {$pull: {albums: albumId}}, () => {
+            console.log('Delete album ref. from artist.');
+        }));
+
+        tracks.forEach((track) => {
+            this.updateSong(track._id, {$unset: {album: ""}}, () => {
+                console.log("Delete album ref. from song.")
+            });
+        });
+
+        promises.push(this.deleteAlbum(albumId, () => {
+            console.log('Album deleted from DB');
+        }));
+
+        Promise.all(promises).then(() => {
+            callback();
+        });
     });
 };

@@ -9,4 +9,6 @@ router.post('/', upload.single('artwork'), controller.createAlbum);
 
 router.get('/', controller.getAll);
 
+router.delete('/:id', controller.deleteAlbum)
+
 module.exports = router;

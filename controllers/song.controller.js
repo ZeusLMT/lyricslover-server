@@ -3,7 +3,7 @@ const database = require('./database');
 exports.createSong = (req, res) => {
     if (req.body !== undefined) {
         database.saveSong(req.body, () => {
-            res.status(201);
+            res.sendStatus(201);
         });
     }
 };
@@ -38,7 +38,7 @@ exports.updateSong = (req, res) => {
 exports.deleteSong = (req, res) => {
     if (req.params.id !== undefined) {
         database.deleteSongAndReferences(req.params.id, () => {
-            res.status(200);
+            res.sendStatus(200);
         });
     } else {
         res.status(400).send("Error deleting song: song id error.");
