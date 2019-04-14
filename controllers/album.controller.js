@@ -21,3 +21,9 @@ exports.createAlbum = (req, res) => {
         });
     }
 };
+
+exports.getAll = (req, res) => {
+    database.getAllAlbums((results) => {
+        res.json(results);
+    })
+};

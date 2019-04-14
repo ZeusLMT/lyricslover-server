@@ -7,4 +7,6 @@ const controller = require('../controllers/album.controller');
 
 router.post('/', upload.single('artwork'), controller.createAlbum);
 
+router.get('/', controller.getAll);
+
 module.exports = router;

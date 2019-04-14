@@ -8,18 +8,23 @@ exports.saveSong = (newSong, callback) => {
     Songs.create(newSong)
         .then((addedSong) => {
             console.log(`New song added to database.`);
+            const promises = [];
 
             //update artist with newly added song
-            this.updateArtist(addedSong.artist, { $addToSet: { songs: addedSong.id } }, () => {
+            promises.push(this.updateArtist(addedSong.artist, {$addToSet: {songs: addedSong.id}}, () => {
                 console.log('Update artist with newly added song.');
+            }));
+
+            if (newSong.album !== undefined) {
+                //update album with newly added song
+                promises.push(this.updateAlbum(addedSong.album, {$addToSet: {tracks: addedSong.id}}, () => {
+                    console.log('Update album with newly added song.');
+                }));
+            }
+
+            Promise.all(promises).then(() => {
                 callback();
             });
-
-            // //update album with newly added song
-            // this.updateAlbum(addedSong.album, { $addToSet: { tracks: addedSong.id } }, () => {
-            //     console.log('update album with newly added song.');
-            //     callback();
-            // });
         })
         .catch((error) => {
             console.log(`Save song error: ${error}`);
