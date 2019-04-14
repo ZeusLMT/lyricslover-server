@@ -8,7 +8,7 @@ exports.createAlbum = (req, res) => {
 
     if (!req.file) {
         database.saveAlbum(req.body, () => {
-            res.send('without artwork');
+            res.status(201).send('Album created without artwork');
         });
     } else {
         fileUpload.save(req.file.buffer, (artwork) => {
@@ -16,7 +16,7 @@ exports.createAlbum = (req, res) => {
             const newJson = {...req.body, artwork};
             //Save to Mongo DB
             database.saveAlbum(newJson, () => {
-                res.send('with artwork');
+                res.status(201).send('Album created with artwork');
             });
         });
     }
@@ -24,6 +24,6 @@ exports.createAlbum = (req, res) => {
 
 exports.getAll = (req, res) => {
     database.getAllAlbums((results) => {
-        res.json(results);
+        res.status(200).json(results);
     })
 };
