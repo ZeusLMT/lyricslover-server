@@ -33,6 +33,13 @@ exports.updateSong = (songId, newObj, callback) => {
     });
 };
 
+exports.getAllSongs = (callback) => {
+    Songs.find().populate('artist', 'name').populate('album', 'title').then((all) => {
+        callback(all);
+    });
+};
+
+
 
 
 

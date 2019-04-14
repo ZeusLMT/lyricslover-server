@@ -7,3 +7,9 @@ exports.createSong = (req, res) => {
         });
     }
 };
+
+exports.getAllSongs = (req, res) => {
+    database.getAllSongs((results) => {
+        res.json(results);
+    })
+}

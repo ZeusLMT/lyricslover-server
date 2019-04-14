@@ -8,4 +8,6 @@ const controller = require('../controllers/song.controller');
 
 router.post('/', urlencodedParser, controller.createSong);
 
+router.get('/', controller.getAllSongs);
+
 module.exports = router;
