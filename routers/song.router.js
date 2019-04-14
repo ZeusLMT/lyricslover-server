@@ -10,4 +10,10 @@ router.post('/', urlencodedParser, controller.createSong);
 
 router.get('/', controller.getAll);
 
+router.get('/:id', controller.getSongById);
+
+router.patch('/:id', urlencodedParser, controller.updateSong);
+
+router.delete('/:id', controller.deleteSong);
+
 module.exports = router;

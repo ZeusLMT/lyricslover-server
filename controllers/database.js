@@ -32,7 +32,8 @@ exports.saveSong = (newSong, callback) => {
 };
 
 exports.updateSong = (songId, newObj, callback) => {
-    Songs.findOneAndUpdate({'_id': songId}, newObj, {new: true}, (error, result) =>{
+    const updateSong = {...newObj, updatedAt: Date.now()};
+    Songs.findOneAndUpdate({'_id': songId}, updateSong, {new: true}, (error, result) =>{
         if (error) throw error;
         callback(result);
     });
@@ -41,6 +42,46 @@ exports.updateSong = (songId, newObj, callback) => {
 exports.getAllSongs = (callback) => {
     Songs.find().populate('artist', 'name').populate('album', 'title').then((all) => {
         callback(all);
+    });
+};
+
+exports.getSongByProperties = (properties, callback) => {
+    Songs.findOne(properties).populate('artist', 'name').populate('album', 'title').then((result) => {
+        callback(result);
+    });
+};
+
+exports.deleteSong = (songId, callback) => {
+    Songs.findOneAndDelete({_id: songId}, () => {
+        callback();
+    });
+};
+
+exports.deleteSongAndReferences = (songId, callback) => {
+    this.getSongByProperties({_id: songId }, (result) => {
+        const artist = result.artist;
+        const album = result.album;
+        const promises = [];
+
+        //update artist with newly added song
+        promises.push(this.updateArtist(artist.id, {$pull: {songs: songId}}, () => {
+            console.log('Delete song ref. from artist.');
+        }));
+
+        if (album !== undefined) {
+            //update album with newly added song
+            promises.push(this.updateAlbum(album.id, {$pull: {tracks: songId}}, () => {
+                console.log('Delete song ref. from album.');
+            }));
+        }
+
+        promises.push(this.deleteSong(songId, () => {
+            console.log('Song deleted from DB');
+        }));
+
+        Promise.all(promises).then(() => {
+            callback();
+        });
     });
 };
 
@@ -68,9 +109,21 @@ exports.updateArtist = (artistId, newObj, callback) => {
     });
 };
 
+exports.deleteArtist = (artistId, callback) => {
+    Artists.findByIdAndDelete(artistId, () => {
+        callback();
+    });
+};
+
 exports.getAllArtists = (callback) => {
     Artists.find().populate('songs', 'title').populate('albums', 'title').then((all) => {
         callback(all);
+    });
+};
+
+exports.getArtistByProperties = (properties, callback) => {
+    Artists.find(properties).populate('songs', 'title').populate('albums', 'title').then((result) => {
+        callback(result);
     });
 };
 
@@ -104,5 +157,17 @@ exports.updateAlbum = (albumId, newObj, callback) => {
 exports.getAllAlbums = (callback) => {
     Albums.find().populate('artist', 'name').populate('tracks', 'title').then((all) => {
         callback(all);
+    });
+};
+
+exports.getAlbumByProperties = (properties, callback) => {
+    Albums.find(properties).populate('artist', 'name').populate('tracks', 'title').then((result) => {
+        callback(result);
+    });
+};
+
+exports.deleteAlbum = (albumId, callback) => {
+    Albums.findByIdAndDelete(albumId, () => {
+        callback();
     });
 };
