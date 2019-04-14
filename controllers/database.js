@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const Albums = require('../models/album.model');
 const Artists = require('../models/artist.model');
 const Songs = require('../models/song.model');
@@ -32,7 +34,7 @@ exports.saveSong = (newSong, callback) => {
 };
 
 exports.updateSong = (songId, newObj, callback) => {
-    const updateSong = {...newObj, updatedAt: Date.now()};
+    const updateSong = {...newObj, updatedAt: moment().format("MMMM Do YYYY, h:mm:ss a")};
     Songs.findOneAndUpdate({'_id': songId}, updateSong, {new: true}, (error, result) =>{
         if (error) throw error;
         callback(result);

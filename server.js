@@ -35,3 +35,12 @@ mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@${proce
     }, err => {
         console.log('Connection to db failed: ' + err);
     });
+
+
+
+
+//For testing
+
+// app.get('/test', (req, res) => {
+//     res.send(moment().format("MMMM Do YYYY, h:mm:ss a"));
+// });
