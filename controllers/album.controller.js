@@ -7,16 +7,16 @@ exports.createAlbum = (req, res) => {
     const fileUpload = new Resize(imagePath);
 
     if (!req.file) {
-        database.saveAlbum(req.body, () => {
-            res.status(201).send('Album created without artwork');
+        database.saveAlbum(req.body, (result) => {
+            res.status(201).json(result);
         });
     } else {
         fileUpload.save(req.file.buffer, (artwork) => {
             //New JSON file
             const newJson = {...req.body, artwork};
             //Save to Mongo DB
-            database.saveAlbum(newJson, () => {
-                res.status(201).send('Album created with artwork');
+            database.saveAlbum(newJson, (result) => {
+                res.status(201).json(result);
             });
         });
     }

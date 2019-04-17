@@ -2,8 +2,8 @@ const database = require('./database');
 
 exports.createArtist = (req, res) => {
     if (req.body !== undefined) {
-        database.saveArtist(req.body, () => {
-            res.sendStatus(201);
+        database.saveArtist(req.body, (result) => {
+            res.status(201).json(result);
         });
     }
 };

@@ -2,8 +2,8 @@ const database = require('./database');
 
 exports.createSong = (req, res) => {
     if (req.body !== undefined) {
-        database.saveSong(req.body, () => {
-            res.sendStatus(201);
+        database.saveSong(req.body, (result) => {
+            res.status(201).json(result);
         });
     }
 };

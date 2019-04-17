@@ -25,7 +25,7 @@ exports.saveSong = (newSong, callback) => {
             }
 
             Promise.all(promises).then(() => {
-                callback();
+                callback(addedSong);
             });
         })
         .catch((error) => {
@@ -95,9 +95,9 @@ exports.deleteSongAndReferences = (songId, callback) => {
 
 exports.saveArtist = (newArtist, callback) => {
     Artists.create(newArtist)
-        .then(() => {
+        .then((addedArtist) => {
             console.log('New artist added to database.');
-            callback();
+            callback(addedArtist);
         })
         .catch((error) => {
             console.log(`Save artist error: ${error}`);
@@ -141,7 +141,7 @@ exports.saveAlbum = (newAlbum, callback) => {
             //update artist with newly added song
             this.updateArtist(addedAlbum.artist, { $addToSet: { albums: addedAlbum.id } }, () => {
                 console.log('Update artist with newly added album.');
-                callback();
+                callback(addedAlbum);
             });
         })
         .catch((error) => {
