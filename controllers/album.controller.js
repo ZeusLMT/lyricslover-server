@@ -1,6 +1,7 @@
 const database = require('./database');
 const path = require('path');
 const Resize = require('../middlewares/sharp');
+const fs = require('../middlewares/fs');
 
 exports.createAlbum = (req, res) => {
     const imagePath = path.join('./public/uploads');
@@ -30,6 +31,11 @@ exports.getAll = (req, res) => {
 
 exports.deleteAlbum = (req, res) => {
     if (req.params.id !== undefined) {
+        database.getAlbumByProperties({_id: req.params.id}, (result) => {
+            const deletePath = `.\\public\\${result.artwork}`;
+            console.log(deletePath);
+            fs.deleteFile(deletePath);
+        });
         database.deleteAlbumAndReferences(req.params.id, () => {
             res.sendStatus(200);
         });
