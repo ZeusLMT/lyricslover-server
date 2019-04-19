@@ -10,6 +10,7 @@ class Resize {
     save(input, callback) {
         const filename = Resize.filename();
         const thumbnailPath = `${this.filepath(filename)}.png`;
+        const relativePath = `uploads\\${filename}.png`;
 
         //Resize to small for thumbnails
         sharp(input).resize(500, 500, {
@@ -18,7 +19,7 @@ class Resize {
         })
             .toFile(thumbnailPath)
             .then(() => {
-                callback(thumbnailPath);
+                callback(relativePath);
             })
             .catch((error) => {
                 console.log(error);
