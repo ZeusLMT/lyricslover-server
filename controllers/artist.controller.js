@@ -1,4 +1,4 @@
-const database = require('./database');
+const database = require('./database/database.artist');
 
 exports.createArtist = (req, res) => {
     if (req.body !== undefined) {

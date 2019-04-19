@@ -1,4 +1,4 @@
-const database = require('./database');
+const database = require('./database/database.song');
 
 exports.createSong = (req, res) => {
     if (req.body !== undefined) {

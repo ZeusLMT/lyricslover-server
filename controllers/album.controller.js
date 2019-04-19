@@ -1,4 +1,4 @@
-const database = require('./database');
+const database = require('./database/database.album');
 const path = require('path');
 const Resize = require('../middlewares/sharp');
 const fs = require('../middlewares/fs');
