@@ -25,7 +25,11 @@ exports.updateAlbum = (albumId, newObj, callback) => {
 };
 
 exports.getAllAlbums = (callback) => {
-    Albums.find().populate('artist', 'name').populate('tracks', 'title').then((all) => {
+    Albums.find()
+        .sort({ title:1 })
+        .populate('artist', 'name')
+        .populate('tracks', 'title')
+        .then((all) => {
         callback(all);
     });
 };

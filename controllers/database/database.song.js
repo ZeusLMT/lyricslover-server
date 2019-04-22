@@ -39,13 +39,20 @@ exports.updateSong = (songId, newObj, callback) => {
 };
 
 exports.getAllSongs = (callback) => {
-    Songs.find().populate('artist', 'name').populate('album', 'title').then((all) => {
+    Songs.find()
+        .sort({title: 1})
+        .populate('artist', 'name')
+        .populate('album', 'title')
+        .then((all) => {
         callback(all);
     });
 };
 
 exports.getSongByProperties = (properties, callback) => {
-    Songs.findOne(properties).populate('artist', 'name').populate('album', 'title').then((result) => {
+    Songs.findOne(properties)
+        .populate('artist', 'name')
+        .populate('album', 'title')
+        .then((result) => {
         callback(result);
     });
 };

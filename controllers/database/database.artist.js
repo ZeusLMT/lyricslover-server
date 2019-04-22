@@ -25,13 +25,20 @@ exports.deleteArtist = (artistId, callback) => {
 };
 
 exports.getAllArtists = (callback) => {
-    Artists.find().populate('songs', 'title').populate('albums', 'title').then((all) => {
+    Artists.find()
+        .sort({ name: 1 })
+        .populate('songs', 'title')
+        .populate('albums', 'title')
+        .then((all) => {
         callback(all);
     });
 };
 
 exports.getArtistByProperties = (properties, callback) => {
-    Artists.findOne(properties).populate('songs', 'title').populate('albums', 'title').then((result) => {
+    Artists.findOne(properties)
+        .populate('songs', 'title')
+        .populate('albums', 'title')
+        .then((result) => {
         callback(result);
     });
 };
