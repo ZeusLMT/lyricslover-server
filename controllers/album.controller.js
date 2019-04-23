@@ -29,6 +29,16 @@ exports.getAll = (req, res) => {
     })
 };
 
+exports.getArtwork = (req, res) => {
+    if (req.params.id !== undefined) {
+        database.getArtworkOnly(req.params.id, (result) => {
+            res.status(200).json(result);
+        })
+    } else {
+        res.status(400).send("Error deleting album: album id error.");
+    }
+};
+
 exports.deleteAlbum = (req, res) => {
     if (req.params.id !== undefined) {
         database.getAlbumByProperties({_id: req.params.id}, (result) => {

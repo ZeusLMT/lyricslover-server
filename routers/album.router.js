@@ -9,6 +9,8 @@ router.post('/', upload.single('artwork'), controller.createAlbum);
 
 router.get('/', controller.getAll);
 
+router.get('/:id/artwork', controller.getArtwork);
+
 router.delete('/:id', controller.deleteAlbum);
 
 router.patch('/:id', upload.single('artwork'), controller.updateAlbum);

@@ -35,9 +35,20 @@ exports.getAllAlbums = (callback) => {
 };
 
 exports.getAlbumByProperties = (properties, callback) => {
-    Albums.findOne(properties).populate('artist', 'name').populate('tracks', 'title').then((result) => {
+    Albums.findOne(properties)
+        .populate('artist', 'name')
+        .populate('tracks', 'title')
+        .then((result) => {
         callback(result);
     });
+};
+
+exports.getArtworkOnly = (albumId, callback) => {
+    console.log(albumId);
+    Albums.findOne({_id: albumId}, {_id: 0, artwork: 1})
+        .then((result) => {
+            callback(result)
+        })
 };
 
 exports.deleteAlbum = (albumId, callback) => {
