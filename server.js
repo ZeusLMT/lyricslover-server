@@ -10,18 +10,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 const helmet = require('helmet');
 app.use(helmet({ ieNoOpen: false }));
 
-// //https redirecting
-//
-// app.enable('trust proxy');
-// app.use ((req, res, next) => {
-//     if (req.secure) {
-//         // request was via https, so do no special handling
-//         next();
-//     } else {
-//         // request was via http, so redirect to https
-//         res.redirect('https://' + req.headers.host + req.url);
-//     }
-// });
+//https redirecting
+
+app.enable('trust proxy');
+app.use ((req, res, next) => {
+    if (req.secure) {
+        // request was via https, so do no special handling
+        next();
+    } else {
+        // request was via http, so redirect to https
+        res.redirect('https://' + req.headers.host + req.url);
+    }
+});
 
 //Use router
 app.use(require('./routers'));
@@ -35,12 +35,3 @@ mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PWD}@${proce
     }, err => {
         console.log('Connection to db failed: ' + err);
     });
-
-
-
-
-//For testing
-
-// app.get('/test', (req, res) => {
-//     res.send(moment().format("MMMM Do YYYY, h:mm:ss a"));
-// });
