@@ -34,13 +34,13 @@ exports.getAllAlbums = (callback) => {
     });
 };
 
-exports.getAlbumByProperties = (properties, callback) => {
-    Albums.findOne(properties)
+exports.getAlbumsByProperties = (properties, callback) => {
+    Albums.find(properties)
         .populate('artist', 'name')
         .populate('tracks', 'title')
-        .then((result) => {
-        callback(result);
-    });
+        .then((results) => {
+            callback(results);
+        });
 };
 
 exports.getArtworkOnly = (albumId, callback) => {
@@ -58,9 +58,9 @@ exports.deleteAlbum = (albumId, callback) => {
 };
 
 exports.deleteAlbumAndReferences = (albumId, callback) => {
-    this.getAlbumByProperties({_id: albumId }, (result) => {
-        const artist = result.artist;
-        const tracks = result.tracks;
+    this.getAlbumsByProperties({_id: albumId}, (results) => {
+        const artist = result[0].artist;
+        const tracks = result[0].tracks;
         const promises = [];
 
         //update artist with newly added song

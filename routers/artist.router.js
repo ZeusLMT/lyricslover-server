@@ -10,4 +10,6 @@ router.post('/', urlencodedParser, controller.createArtist);
 
 router.get('/', controller.getAll);
 
+router.get('/:id', controller.getArtistById);
+
 module.exports = router;

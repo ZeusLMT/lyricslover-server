@@ -17,12 +17,18 @@ exports.getAll = (req, res) => {
 exports.getSongById = (req, res) => {
     if (req.params.id !== undefined) {
         const query = {_id: req.params.id};
-        database.getSongByProperties(query, (result) => {
-            res.status(200).json(result);
+        database.getSongsByProperties(query, (results) => {
+            res.status(200).json(results[0]);
         });
     } else {
-        res.send("Error getting all songs.");
+        res.send("Error getting song.");
     }
+};
+
+exports.getSongsByProperties = (req, res) => {
+    database.getSongsByProperties(req.query, (results) => {
+        res.status(200).json(results);
+    })
 };
 
 exports.updateSong = (req, res) => {

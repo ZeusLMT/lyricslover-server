@@ -34,11 +34,11 @@ exports.getAllArtists = (callback) => {
     });
 };
 
-exports.getArtistByProperties = (properties, callback) => {
-    Artists.findOne(properties)
+exports.getArtistsByProperties = (properties, callback) => {
+    Artists.find(properties)
         .populate('songs', 'title')
         .populate('albums', 'title')
-        .then((result) => {
-        callback(result);
+        .then((results) => {
+        callback(results);
     });
 };

@@ -9,6 +9,10 @@ router.post('/', upload.single('artwork'), controller.createAlbum);
 
 router.get('/', controller.getAll);
 
+router.get('/search', controller.getAlbumsByProperties);
+
+router.get('/:id', controller.getAlbumById);
+
 router.get('/:id/artwork', controller.getArtwork);
 
 router.delete('/:id', controller.deleteAlbum);

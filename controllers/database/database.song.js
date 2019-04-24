@@ -48,12 +48,12 @@ exports.getAllSongs = (callback) => {
     });
 };
 
-exports.getSongByProperties = (properties, callback) => {
-    Songs.findOne(properties)
+exports.getSongsByProperties = (properties, callback) => {
+    Songs.find(properties)
         .populate('artist', 'name')
         .populate('album', 'title')
-        .then((result) => {
-        callback(result);
+        .then((results) => {
+        callback(results);
     });
 };
 
@@ -64,9 +64,9 @@ exports.deleteSong = (songId, callback) => {
 };
 
 exports.deleteSongAndReferences = (songId, callback) => {
-    this.getSongByProperties({_id: songId }, (result) => {
-        const artist = result.artist;
-        const album = result.album;
+    this.getSongsByProperties({_id: songId }, (results) => {
+        const artist = results[0].artist;
+        const album = results[0].album;
         const promises = [];
 
         //update artist with newly added song

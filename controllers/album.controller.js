@@ -26,7 +26,24 @@ exports.createAlbum = (req, res) => {
 exports.getAll = (req, res) => {
     database.getAllAlbums((results) => {
         res.status(200).json(results);
+    });
+};
+
+exports.getAlbumsByProperties = (req, res) => {
+    database.getAlbumsByProperties(req.query, (results) => {
+        res.status(200).json(results);
     })
+};
+
+exports.getAlbumById = (req, res) => {
+    if (req.params.id !== undefined) {
+        const query = {_id: req.params.id};
+        database.getAlbumsByProperties(query, (results) => {
+            res.status(200).json(results[0]);
+        });
+    } else {
+        res.send("Error getting album.");
+    }
 };
 
 exports.getArtwork = (req, res) => {
@@ -41,10 +58,10 @@ exports.getArtwork = (req, res) => {
 
 exports.deleteAlbum = (req, res) => {
     if (req.params.id !== undefined) {
-        database.getAlbumByProperties({_id: req.params.id}, (result) => {
-            if (result.artwork !== undefined) {
+        database.getAlbumsByProperties({_id: req.params.id}, (results) => {
+            if (results[0].artwork !== undefined) {
                 //Delete previous artwork
-                const deletePath = `.\\public\\${result.artwork}`;
+                const deletePath = `.\\public\\${results[0].artwork}`;
                 fs.deleteFile(deletePath);
             }
         });
@@ -68,10 +85,10 @@ exports.updateAlbum = (req, res) => {
             });
         } else {
             //Check if album already has artwork
-            database.getAlbumByProperties({_id: req.params.id}, (result) => {
-                if (result.artwork !== undefined) {
+            database.getAlbumsByProperties({_id: req.params.id}, (results) => {
+                if (results[0].artwork !== undefined) {
                     //Delete previous artwork
-                    const deletePath = `.\\public\\${result.artwork}`;
+                    const deletePath = `.\\public\\${results[0].artwork}`;
                     fs.deleteFile(deletePath);
                 }
             });

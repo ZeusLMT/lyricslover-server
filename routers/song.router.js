@@ -10,6 +10,8 @@ router.post('/', urlencodedParser, controller.createSong);
 
 router.get('/', controller.getAll);
 
+router.get('/search', controller.getSongsByProperties);
+
 router.get('/:id', controller.getSongById);
 
 router.patch('/:id', urlencodedParser, controller.updateSong);
