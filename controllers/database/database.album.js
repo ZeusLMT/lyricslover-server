@@ -59,8 +59,8 @@ exports.deleteAlbum = (albumId, callback) => {
 
 exports.deleteAlbumAndReferences = (albumId, callback) => {
     this.getAlbumsByProperties({_id: albumId}, (results) => {
-        const artist = result[0].artist;
-        const tracks = result[0].tracks;
+        const artist = results[0].artist;
+        const tracks = results[0].tracks;
         const promises = [];
 
         //update artist with newly added song
