@@ -24,3 +24,13 @@ exports.getArtistById = (req, res) => {
         res.send("Error getting artist.");
     }
 };
+
+exports.updateArtist = (req, res) => {
+    if (req.params.id !== undefined) {
+        database.updateArtist(req.params.id, req.body, (newResult) => {
+            res.status(200).json(newResult);
+        });
+    } else {
+        res.status(400).send("Error updating artist: artist id error.");
+    }
+};
