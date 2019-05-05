@@ -8,7 +8,7 @@ let songSchema = new Schema({
     artist: {type: ObjectId, ref: 'Artist', required: true},
     album: {type: ObjectId, ref: 'Album'},
     lyrics: {type: String, required: true},
-    updatedAt: {type: String, default: moment().local.format("MMMM Do YYYY, h:mm:ss a")}
+    updatedAt: {type: String, default: moment().local().format("MMMM Do YYYY, h:mm:ss a")}
 });
 
 
