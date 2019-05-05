@@ -31,7 +31,7 @@ exports.saveSong = (newSong, callback) => {
 };
 
 exports.updateSong = (songId, newObj, callback) => {
-    const updateSong = {...newObj, updatedAt: moment().format("MMMM Do YYYY, h:mm:ss a")};
+    const updateSong = {...newObj, updatedAt: moment().locale().format("MMMM Do YYYY, h:mm:ss a")};
     Songs.findOneAndUpdate({'_id': songId}, updateSong, {new: true}, (error, result) =>{
         if (error) throw error;
         callback(result);
