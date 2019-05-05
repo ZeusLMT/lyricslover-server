@@ -44,7 +44,6 @@ exports.getAlbumsByProperties = (properties, callback) => {
 };
 
 exports.getArtworkOnly = (albumId, callback) => {
-    console.log(albumId);
     Albums.findOne({_id: albumId}, {_id: 0, artwork: 1})
         .then((result) => {
             callback(result)
